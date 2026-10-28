@@ -1,15 +1,19 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-struct Term{
+struct Term {
     int row;
     int col;
     int value;
 };
 
-void inputMatrix(vector<Term>& A, int n){
 
-    for(int i = 0; i < n; i++){
+// 輸入稀疏矩陣
+void inputMatrix(vector<Term>& A, int n) {
+
+    for (int i = 0; i < n; i++) {
 
         Term temp;
 
@@ -21,19 +25,13 @@ void inputMatrix(vector<Term>& A, int n){
     }
 }
 
-bool cmp(Term a, Term b){
 
-    if(a.row != b.row)
-        return a.row < b.row;
-
-    return a.col < b.col;
-}
-
-vector<Term> transposeMatrix(const vector<Term>& A){
+// 轉置矩陣
+vector<Term> transposeMatrix(const vector<Term>& A) {
 
     vector<Term> B;
 
-    for(int i = 0; i < A.size(); i++){
+    for (int i = 0; i < A.size(); i++) {
 
         Term temp;
 
@@ -44,24 +42,47 @@ vector<Term> transposeMatrix(const vector<Term>& A){
         B.push_back(temp);
     }
 
-    sort(B.begin(), B.end(), cmp);
-
     return B;
 }
 
-void printMatrix(const vector<Term>& B, int row, int col, int n){
 
-    cout << row << " " << col << " " << n << '\n';
+// 排序規則
+bool compareTerm(Term a, Term b) {
 
-    for(int i = 0; i < B.size(); i++){
+    if (a.row != b.row)
+        return a.row < b.row;
 
-        cout << B[i].row << " "
-             << B[i].col << " "
-             << B[i].value << '\n';
+    return a.col < b.col;
+}
+
+
+// 排序矩陣
+void sortMatrix(vector<Term>& A) {
+
+    sort(A.begin(), A.end(), compareTerm);
+}
+
+
+// 輸出矩陣
+void printMatrix(const vector<Term>& A,
+                 int row,
+                 int col,
+                 int n) {
+
+    cout << row << " "
+         << col << " "
+         << n << '\n';
+
+    for (int i = 0; i < A.size(); i++) {
+
+        cout << A[i].row << " "
+             << A[i].col << " "
+             << A[i].value << '\n';
     }
 }
 
-int main(){
+
+int main() {
 
     int row, col, n;
 
@@ -72,6 +93,8 @@ int main(){
     inputMatrix(A, n);
 
     vector<Term> B = transposeMatrix(A);
+
+    sortMatrix(B);
 
     printMatrix(B, col, row, n);
 
